@@ -2,6 +2,9 @@ package me.cirosanchez.kylo;
 
 import lombok.Getter;
 import me.cirosanchez.kylo.btn.ButtonListener;
+import me.cirosanchez.kylo.btn.ColorsListener;
+import me.cirosanchez.kylo.cmd.ColorsCommand;
+import me.cirosanchez.kylo.cmd.NukeCommand;
 import me.cirosanchez.kylo.cmd.VerificationCommand;
 import me.cirosanchez.kylo.logger.Logger;
 import me.cirosanchez.kylo.token.Token;
@@ -29,17 +32,20 @@ public class Kylo {
         this.api = new DiscordApiBuilder().setAllIntents().setToken(Token.TOKEN).login().join();
     }
     public void start(){
-        api.addSlashCommandCreateListener(new VerificationCommand(this));
-        api.addButtonClickListener(new ButtonListener(this));
-
-        api.updateActivity(ActivityType.WATCHING, "https://cirosanchez.me");
-        api.updateStatus(UserStatus.IDLE);
-
         server = api.getServerById(1117665811054723132L).get();
         verifiedRole = server.getRoleById(1188310974948708422L).get();
         adminRole = server.getRoleById(1189010066322509955L).get();
         logger = new Logger(this);
-        // Hello
+
+        api.addSlashCommandCreateListener(new VerificationCommand(this));
+        api.addButtonClickListener(new ButtonListener(this));
+        api.addSlashCommandCreateListener(new ColorsCommand(this));
+        api.addSelectMenuChooseListener(new ColorsListener(this));
+        api.addSlashCommandCreateListener(new NukeCommand(this));
+
+        api.updateActivity(ActivityType.WATCHING, "https://cirosanchez.me");
+        api.updateStatus(UserStatus.IDLE);
+
 
         System.out.println("Kylo is online!");
         System.out.println("Invite link: " + api.createBotInvite());

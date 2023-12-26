@@ -23,7 +23,6 @@ public class VerificationCommand implements SlashCommandCreateListener {
 
     @Override
     public void onSlashCommandCreate(SlashCommandCreateEvent event) {
-        System.out.println(event.getSlashCommandInteraction().getCommandName());
         if (!event.getSlashCommandInteraction().getCommandName().equalsIgnoreCase("verification")){
             return;
         }
@@ -43,6 +42,15 @@ public class VerificationCommand implements SlashCommandCreateListener {
         ActionRow row = ActionRow.of(
                 Button.success("verify","Verificate", "\u2705")
         );
-        event.getSlashCommandInteraction().createImmediateResponder().addEmbed(embedBuilder).addComponents(row).respond();
+
+        new MessageBuilder()
+                .addEmbed(embedBuilder)
+                        .addComponents(row)
+                                .setContent(kylo.getServer().getEveryoneRole().getMentionTag())
+                                        .send(event.getSlashCommandInteraction().getChannel().get());
+        event.getSlashCommandInteraction().createImmediateResponder()
+                .setContent("Enviando modulo...")
+                .setFlags(MessageFlag.EPHEMERAL)
+                .respond();
     }
 }
