@@ -39,7 +39,7 @@ public class Kylo {
         verifiedRole = server.getRoleById(1188310974948708422L).get();
         adminRole = server.getRoleById(1189010066322509955L).get();
         logger = new Logger(this);
-
+        // Hello
 
         System.out.println("Kylo is online!");
         System.out.println("Invite link: " + api.createBotInvite());
